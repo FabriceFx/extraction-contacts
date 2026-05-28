@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <!-- Polices Google : Open Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Variables CSS - Charte Officielle Google Workspace (Material 3) */
+    :root {
+      --primary: #0b57d0; /* Bleu Google Workspace */
+      --primary-hover: #0842a0; /* Bleu Google Workspace Survol */
+      --secondary: #444746; /* Anthracite secondaire */
+      --bg-app: #f3f6fc; /* Gris-Bleu natif de la Sidebar Google */
+      --bg-card: #ffffff; /* Fond blanc pur */
+      --text-main: #1f1f1f; /* Noir doux de lecture Google */
+      --text-muted: #444746; /* Gris de description */
+      --border: #c7c7c7; /* Ligne de bordure Google standard */
+      --border-focus: #0b57d0;
+      --success: #146c2e; /* Vert de validation Google */
+      --error: #b3261e; /* Rouge d'erreur Google */
+      --radius-lg: 16px; /* Arrondi des cartes (Material 3) */
+      --radius-md: 8px; /* Arrondi des formulaires */
+      --radius-sm: 4px; /* Arrondi des petits éléments */
+      --radius-pill: 100px; /* Bouton pilule standard de Google Workspace */
+      --transition: all 0.15s ease-in-out;
+    }
+
+    /* Reset & Base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Open Sans', 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-app);
+      color: var(--text-main);
+      font-size: 13px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Conteneur principal défilant */
+    .container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      padding-bottom: 60px; /* Espace pour le pied de page */
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* En-tête de la Sidebar */
+    .header {
+      background: #ffffff;
+      padding: 16px;
+      border-bottom: 1px solid #e3e3e3;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    
+    .header h1 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: -0.01em;
+    }
+    
+    .header p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Cartes plates Material Design 3 */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid #e3e3e3;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: none;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .card:hover {
+      border-color: #b8b8b8;
+    }
+
+    /* Formulaires */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    
+    .description {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+    
+    .input, .textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 12px;
+      background-color: #ffffff;
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+    
+    .input:focus, .textarea:focus {
+      outline: none;
+      border: 2px solid var(--primary);
+      padding: 7px 11px; /* Correction décalage */
+    }
+
+    .textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    /* Boutons format pilule Workspace */
+    .btn {
+      width: 100%;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 12px;
+      text-align: center;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      border: none;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border-radius: var(--radius-pill);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
+    }
+
+    .btn-primary:disabled {
+      background-color: #a0c2f9;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid #747775;
+      border-radius: var(--radius-pill);
+      padding: 6px 12px;
+      width: fit-content;
+      margin-top: 4px;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #f3f6fc;
+      border-color: var(--primary);
+    }
+
+    .btn-secondary:disabled {
+      color: #a0c2f9;
+      border-color: #e3e3e3;
+      cursor: not-allowed;
+    }
+
+    /* Statut et Messages */
+    #status {
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      min-height: 24px;
+      transition: var(--transition);
+    }
+
+    .success {
+      background-color: #e6f4ea;
+      color: var(--success);
+    }
+
+    .error {
+      background-color: #fce8e6;
+      color: var(--error);
+    }
+
+    /* Petit indicateur de chargement circulaire */
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Pied de page figé officiel FF Labs */
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px 12px;
+      background-color: #ffffff;
+      border-top: 1px solid #e3e3e3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: var(--secondary);
+      z-index: 10;
+    }
+    
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- En-tête -->
+  <div class="header">
+    <h1 id="txt-title">Extraction de contacts</h1>
+    <p id="txt-subtitle">Configuration & paramètres</p>
+  </div>
+
+  <!-- Contenu défilant -->
+  <div class="container">
+    
+    <!-- Carte 1: Clé API Gemini -->
+    <div class="card">
+      <div class="form-group">
+        <label class="label" for="geminiKey" id="txt-labelApiKey">Clé API Gemini</label>
+        <div class="description" id="txt-descApiKey">Laissez vide pour forcer le moteur heuristique.</div>
+        <input type="text" class="input" id="geminiKey" placeholder="AIzaSy...">
+        <button class="btn btn-secondary" id="testBtn" onclick="testAPI()">
+          <span id="txt-btnTestKey">Tester la clé</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Carte 2: Mots ignorés -->
+    <div class="card">
+      <div class="form-group">
+        <label class="label" for="motsIgnores" id="txt-labelIgnoredWords">Mots ignorés (Expéditeurs)</label>
+        <div class="description" id="txt-descIgnoredWords">Ignorer les expéditeurs contenant ces mots (séparés par des virgules).</div>
+        <textarea class="textarea" id="motsIgnores" placeholder="no-reply, newsletter, contact@..."></textarea>
+      </div>
+    </div>
+
+    <!-- Carte 3: Mots-clés poste -->
+    <div class="card">
+      <div class="form-group">
+        <label class="label" for="motsCles" id="txt-labelKeywords">Mots-clés de fonction</label>
+        <div class="description" id="txt-descKeywords">Mots recherchés dans la signature pour identifier le poste (séparés par des virgules).</div>
+        <textarea class="textarea" id="motsCles" placeholder="directeur, manager, developpeur..."></textarea>
+      </div>
+    </div>
+
+    <!-- Carte 4: Jours de scan -->
+    <div class="card">
+      <div class="form-group">
+        <label class="label" for="joursScan" id="txt-labelScanDays">Historique à scanner (Jours)</label>
+        <div class="description" id="txt-descScanDays">Nombre de jours en arrière à analyser (ex: 30, 365).</div>
+        <input type="number" class="input" id="joursScan" placeholder="365" min="1">
+      </div>
+    </div>
+
+    <!-- Bouton principal d'enregistrement -->
+    <button class="btn btn-primary" id="saveBtn" onclick="saveConfig()">
+      <div class="spinner" id="loader"></div>
+      <span id="txt-btnSave">Enregistrer les paramètres</span>
+    </button>
+
+    <!-- Zone de notification -->
+    <div id="status"></div>
+  </div>
+
+  <!-- Pied de page officiel FF Labs -->
+  <div class="footer">
+    <div class="footer-logo">
+      <span>⚡ FF Labs</span>
+    </div>
+    <div>
+      <a href="https://faucheux.bzh" target="_blank" style="color: inherit; text-decoration: none;">&lt;&gt; par Fabrice Faucheux</a>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/FabriceFx/Extraction-contact" target="_blank" id="txt-footerHelp">Aide</a>
+    </div>
+  </div>
+
+  <script>
+    // Dictionnaire de traduction FR/EN (Sentence case en français)
+    const TRANSLATIONS = {
+      fr: {
+        title: "Extraction de contacts",
+        subtitle: "Configuration & paramètres",
+        labelApiKey: "Clé API Gemini",
+        descApiKey: "Laissez vide pour forcer le moteur heuristique.",
+        placeholderApiKey: "Saisir la clé Gemini (AIzaSy...)",
+        btnTestKey: "Tester la clé",
+        btnTestingKey: "Test en cours...",
+        labelIgnoredWords: "Mots ignorés (Expéditeurs)",
+        descIgnoredWords: "Ignorer les expéditeurs contenant ces mots (séparés par des virgules).",
+        placeholderIgnoredWords: "Ex: no-reply, newsletter, contact@...",
+        labelKeywords: "Mots-clés de fonction",
+        descKeywords: "Mots recherchés dans la signature pour identifier le poste (séparés par des virgules).",
+        placeholderKeywords: "Ex: directeur, manager, developpeur...",
+        labelScanDays: "Historique à scanner (Jours)",
+        descScanDays: "Nombre de jours en arrière à analyser (ex: 30, 365).",
+        btnSave: "Enregistrer les paramètres",
+        btnSaving: "Enregistrement en cours...",
+        msgSaved: "✅ Configuration sauvegardée !",
+        msgError: "❌ Une erreur est survenue.",
+        footerHelp: "Aide",
+        msgEnterKey: "Veuillez saisir une clé avant de tester."
+      },
+      en: {
+        title: "Contact Extraction",
+        subtitle: "Configuration & settings",
+        labelApiKey: "Gemini API Key",
+        descApiKey: "Leave blank to force the heuristic engine.",
+        placeholderApiKey: "Enter Gemini key (AIzaSy...)",
+        btnTestKey: "Test Key",
+        btnTestingKey: "Testing key...",
+        labelIgnoredWords: "Ignored Words (Senders)",
+        descIgnoredWords: "Ignore senders containing these words (comma separated).",
+        placeholderIgnoredWords: "E.g.: no-reply, newsletter, contact@...",
+        labelKeywords: "Job Title Keywords",
+        descKeywords: "Words searched in signature to identify job titles (comma separated).",
+        placeholderKeywords: "E.g.: director, manager, developer...",
+        labelScanDays: "Scan History (Days)",
+        descScanDays: "Number of days in the past to analyze (e.g. 30, 365).",
+        btnSave: "Save Settings",
+        btnSaving: "Saving settings...",
+        msgSaved: "✅ Configuration saved!",
+        msgError: "❌ An error occurred.",
+        footerHelp: "Help",
+        msgEnterKey: "Please enter a key before testing."
+      }
+    };
+
+    // 1. Détection de la locale passée par le serveur (défaut : 'en')
+    const USER_LOCALE = "<?!= locale ?>".toLowerCase().startsWith('fr') ? 'fr' : 'en';
+
+    function getTxt(key) {
+      return TRANSLATIONS[USER_LOCALE][key] || TRANSLATIONS['en'][key] || key;
+    }
+
+    // 2. Application de l'internationalisation dynamique
+    function applyI18n() {
+      document.getElementById('txt-title').textContent = getTxt('title');
+      document.getElementById('txt-subtitle').textContent = getTxt('subtitle');
+      document.getElementById('txt-labelApiKey').textContent = getTxt('labelApiKey');
+      document.getElementById('txt-descApiKey').textContent = getTxt('descApiKey');
+      document.getElementById('geminiKey').placeholder = getTxt('placeholderApiKey');
+      document.getElementById('txt-btnTestKey').textContent = getTxt('btnTestKey');
+      
+      document.getElementById('txt-labelIgnoredWords').textContent = getTxt('labelIgnoredWords');
+      document.getElementById('txt-descIgnoredWords').textContent = getTxt('descIgnoredWords');
+      document.getElementById('motsIgnores').placeholder = getTxt('placeholderIgnoredWords');
+      
+      document.getElementById('txt-labelKeywords').textContent = getTxt('labelKeywords');
+      document.getElementById('txt-descKeywords').textContent = getTxt('descKeywords');
+      document.getElementById('motsCles').placeholder = getTxt('placeholderKeywords');
+      
+      document.getElementById('txt-labelScanDays').textContent = getTxt('labelScanDays');
+      document.getElementById('txt-descScanDays').textContent = getTxt('descScanDays');
+      
+      document.getElementById('txt-btnSave').textContent = getTxt('btnSave');
+      document.getElementById('txt-footerHelp').textContent = getTxt('footerHelp');
+    }
+
+    // Chargement initial des données
+    document.addEventListener('DOMContentLoaded', () => {
+      applyI18n();
+      google.script.run
+        .withSuccessHandler(populateForm)
+        .withFailureHandler(showError)
+        .getConfig();
+    });
+
+    function populateForm(config) {
+      document.getElementById('geminiKey').value = config.geminiKey || '';
+      document.getElementById('motsIgnores').value = config.motsIgnores || '';
+      document.getElementById('motsCles').value = config.motsCles || '';
+      document.getElementById('joursScan').value = config.joursScan || '365';
+    }
+
+    function saveConfig() {
+      const btn = document.getElementById('saveBtn');
+      const loader = document.getElementById('loader');
+      const btnText = document.getElementById('txt-btnSave');
+      const status = document.getElementById('status');
+
+      // UI chargement
+      btn.disabled = true;
+      loader.style.display = 'block';
+      btnText.innerText = getTxt('btnSaving');
+      status.innerText = '';
+      status.className = '';
+
+      const config = {
+        geminiKey: document.getElementById('geminiKey').value,
+        motsIgnores: document.getElementById('motsIgnores').value,
+        motsCles: document.getElementById('motsCles').value,
+        joursScan: document.getElementById('joursScan').value
+      };
+
+      google.script.run
+        .withSuccessHandler(() => {
+          btn.disabled = false;
+          loader.style.display = 'none';
+          btnText.innerText = getTxt('btnSave');
+          status.className = 'success';
+          status.innerText = getTxt('msgSaved');
+          setTimeout(() => {
+            status.innerText = '';
+            status.className = '';
+          }, 3000);
+        })
+        .withFailureHandler((err) => {
+          btn.disabled = false;
+          loader.style.display = 'none';
+          btnText.innerText = getTxt('btnSave');
+          showError(err);
+        })
+        .saveConfig(config);
+    }
+
+    function testAPI() {
+      const btn = document.getElementById('testBtn');
+      const btnText = document.getElementById('txt-btnTestKey');
+      const key = document.getElementById('geminiKey').value;
+      const status = document.getElementById('status');
+      
+      if (!key) {
+         showError({ message: getTxt('msgEnterKey') });
+         return;
+      }
+      
+      btn.disabled = true;
+      btnText.innerText = getTxt('btnTestingKey');
+      status.innerText = "";
+      status.className = "";
+      
+      google.script.run
+        .withSuccessHandler((res) => {
+          btn.disabled = false;
+          btnText.innerText = getTxt('btnTestKey');
+          status.className = res.success ? 'success' : 'error';
+          status.innerText = res.message;
+        })
+        .withFailureHandler((err) => {
+          btn.disabled = false;
+          btnText.innerText = getTxt('btnTestKey');
+          showError(err);
+        })
+        .testerCleGemini(key);
+    }
+
+    function showError(err) {
+      const status = document.getElementById('status');
+      status.className = 'error';
+      status.innerText = (getTxt('msgError') + ' ' + (err.message || ''));
+    }
+  </script>
+</body>
+
+</html>
